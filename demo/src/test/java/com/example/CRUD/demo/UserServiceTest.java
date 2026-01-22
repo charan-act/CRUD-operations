@@ -48,29 +48,31 @@ public class UserServiceTest {
         updatedDetails.setPhone("9999999999");
 
     }
+
     @Test
     @DisplayName("Should create user successfully")
-    void testCreateUser_Success(){
+    void testCreateUser_Success() {
         //Arrange
         when(userRepository.save(user)).thenReturn(user);
 
         //ACT
-        User result=userService.createUser(user);
+        User result = userService.createUser(user);
 
         //Assert
         assertNotNull(result);
-        assertEquals("charan",result.getName());
-        assertEquals("charan@gmail.com",result.getEmail());
-        verify(userRepository,times(1)).save(user);
+        assertEquals("charan", result.getName());
+        assertEquals("charan@gmail.com", result.getEmail());
+        verify(userRepository, times(1)).save(user);
     }
+
     @Test
     @DisplayName("Should get  all user")
- void testGetAllUsers_Success(){
+    void testGetAllUsers_Success() {
 
 
         List<User> users = Arrays.asList(
                 user,
-                new User(2L, "Tej", "tej@gmail.com","843343")
+                new User(2L, "Tej", "tej@gmail.com", "843343")
         );
         when(userRepository.findAll()).thenReturn(users);
         List<User> result = userService.getAllUsers();
@@ -124,8 +126,14 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, never()).save(any());
     }
+
+    @Test
+    public void testGetUserById() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        Optional<User> result = userService.getUserById(1L);
+        assertTrue(result.isPresent());
+        assertEquals("charan@gmail.com", result.get().getEmail());
+    }
 }
-
-
 
 
