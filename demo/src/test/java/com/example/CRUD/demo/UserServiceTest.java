@@ -134,6 +134,12 @@ public class UserServiceTest {
         assertTrue(result.isPresent());
         assertEquals("charan@gmail.com", result.get().getEmail());
     }
+    @Test
+    public void testDeleteUser() {
+        doNothing().when(userRepository).deleteById(1L);
+        userService.deleteUser(1L);
+        verify(userRepository, times(1)).deleteById(1L);
+    }
 }
 
 
